@@ -1,0 +1,56 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: iot
+      POSTGRES_PASSWORD: iot
+      POSTGRES_DB: iot
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  mosquitto:
+    image: eclipse-mosquitto:2
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      PORT: "4000"
+      DATABASE_URL: postgres://iot:iot@postgres:5432/iot
+      JWT_SECRET: change-me-change-me-change-me
+      FRONTEND_ORIGIN: http://localhost:5173
+      MQTT_URL: mqtt://mosquitto:1883
+      MQTT_SENSOR_TOPIC: sensor/data
+      MQTT_LED1_TOPIC: led/n1
+      MQTT_LED2_TOPIC: led/n2
+      SEED_ADMIN_USERNAME: admin
+      SEED_ADMIN_PASSWORD: admin123
+    depends_on:
+      - postgres
+      - mosquitto
+    ports:
+      - "4000:4000"
+    command: sh -c "node dist/scripts/initDb.js && node dist/index.js"
+
+  frontend:
+    build:
+      context: ./frontend
+    environment:
+      VITE_BACKEND_URL: http://localhost:4000
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+
+volumes:
+  pgdata:
+  mosquitto_data:
+  mosquitto_log:
