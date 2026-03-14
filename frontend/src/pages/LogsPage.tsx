@@ -28,6 +28,7 @@ export function LogsPage() {
   const [rows, setRows] = useState<LogRow[]>([]);
   const [total, setTotal] = useState(0);
   const [exportOpen, setExportOpen] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const totalPages = useMemo(() => Math.max(1, Math.ceil(total / pageSize)), [total, pageSize]);
 
@@ -55,7 +56,6 @@ export function LogsPage() {
   useEffect(() => {
     const params: Record<string, string | number> = { page, pageSize };
     if (q.trim()) params.q = q.trim();
-
     void api
       .get<{ rows: LogRow[]; total: number; page: number; pageSize: number }>("/api/logs", { params })
       .then((res) => {
@@ -105,6 +105,31 @@ export function LogsPage() {
                   setPage(1);
                 }}
               />
+            </div>
+            <div className="relative">
+              <button
+                className="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+                disabled={refreshing}
+                onClick={() => {
+                  setExportOpen(false);
+                  setRefreshing(true);
+                  const params: Record<string, string | number> = { page, pageSize };
+                  if (q.trim()) params.q = q.trim();
+                  void api
+                    .get<{ rows: LogRow[]; total: number; page: number; pageSize: number }>("/api/logs", { params })
+                    .then((res) => {
+                      setRows(res.data.rows);
+                      setTotal(res.data.total);
+                    })
+                    .catch(() => {
+                      setRows([]);
+                      setTotal(0);
+                    })
+                    .finally(() => setRefreshing(false));
+                }}
+              >
+                {refreshing ? "Refreshing..." : "Refresh"}
+              </button>
             </div>
             <div className="relative">
               <button

@@ -159,17 +159,17 @@ export function MainPage() {
 
           <div className="mt-4 flex flex-col gap-3 md:flex-row">
             <SensorBlock
-              label="Nhiệt độ"
+              label="Temperature"
               value={latest?.temperature != null ? `${latest.temperature.toFixed(1)}°C` : "-"}
               icon={<IconThermometer className="h-6 w-6" />}
             />
             <SensorBlock
-              label="Độ ẩm"
+              label="Humidity"
               value={latest?.humidity != null ? `${latest.humidity.toFixed(0)}%` : "-"}
               icon={<IconDroplet className="h-6 w-6" />}
             />
             <SensorBlock
-              label="Ánh sáng"
+              label="Light"
               value={latest?.light != null ? `${latest.light.toFixed(0)} lux` : "-"}
               icon={<IconSun className="h-6 w-6" />}
             />

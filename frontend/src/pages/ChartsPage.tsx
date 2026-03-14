@@ -37,12 +37,12 @@ export function ChartsPage() {
   const temperatureData = useMemo(() => rows.map((r) => r.temperature ?? null), [rows]);
   const lightData = useMemo(() => rows.map((r) => r.light ?? null), [rows]);
 
-  const humidityBins = useMemo(() => {
-    const values = rows.map((r) => r.humidity).filter((v): v is number => typeof v === "number");
-    const low = values.filter((v) => v < 40).length;
-    const mid = values.filter((v) => v >= 40 && v <= 70).length;
-    const high = values.filter((v) => v > 70).length;
-    return { low, mid, high };
+  const humidityPercent = useMemo(() => {
+    for (let i = rows.length - 1; i >= 0; i -= 1) {
+      const v = rows[i]?.humidity;
+      if (typeof v === "number") return Math.min(100, Math.max(0, v));
+    }
+    return 0;
   }, [rows]);
 
   useEffect(() => {
@@ -209,11 +209,11 @@ export function ChartsPage() {
           <div className="h-64">
             <Pie
               data={{
-                labels: ["Thấp (< 40%)", "Trung bình (40–70%)", "Cao (> 70%)"],
+                labels: ["Humidity (%)", "Remaining"],
                 datasets: [
                   {
-                    data: [humidityBins.low, humidityBins.mid, humidityBins.high],
-                    backgroundColor: ["rgba(244, 63, 94, 0.8)", "rgba(59, 130, 246, 0.8)", "rgba(168, 85, 247, 0.8)"],
+                    data: [humidityPercent, 100 - humidityPercent],
+                    backgroundColor: ["rgba(59, 130, 246, 0.85)", "rgba(148, 163, 184, 0.35)"],
                     borderWidth: 0
                   }
                 ]

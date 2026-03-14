@@ -5,11 +5,11 @@ import { getUsernameFromToken } from "../lib/user";
 import { IconChart, IconControl, IconHome, IconLogs } from "./Icons";
 
 function getTitle(pathname: string) {
-  if (pathname.startsWith("/dashboard")) return "Dashboard";
-  if (pathname.startsWith("/main")) return "Main";
-  if (pathname.startsWith("/charts")) return "Charts";
-  if (pathname.startsWith("/logs")) return "Logs";
-  return "Dashboard";
+  if (pathname.startsWith("/dashboard")) return "DASHBOARD";
+  if (pathname.startsWith("/main")) return "MAIN";
+  if (pathname.startsWith("/charts")) return "CHARTS";
+  if (pathname.startsWith("/logs")) return "LOGS";
+  return "DASHBOARD";
 }
 
 function initials(name: string) {
@@ -88,7 +88,7 @@ export function AppLayout() {
       </header>
 
       <main className="ml-64 pt-20">
-        <div className="px-6 pb-10">
+        <div className="mx-auto w-full max-w-7xl px-6 pb-10">
           <Outlet />
         </div>
       </main>

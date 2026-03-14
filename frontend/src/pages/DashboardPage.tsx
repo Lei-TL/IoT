@@ -67,7 +67,7 @@ export function DashboardPage() {
         <div className="text-sm font-semibold tracking-wide opacity-90">DASHBOARD</div>
         <div className="mt-2 text-2xl font-semibold">Chào mừng bạn đến với hệ thống IoT</div>
         <div className="mt-2 max-w-3xl text-sm opacity-95">
-          Hệ thống thu thập dữ liệu cảm biến thời gian thực (nhiệt độ, độ ẩm, ánh sáng) từ ESP32 qua MQTT, lưu vào PostgreSQL và đẩy cập nhật realtime lên Web UI bằng WebSocket.
+          Thông điệp chào mừng: Hệ thống thu thập dữ liệu cảm biến thời gian thực (temperature, humidity, light) từ ESP32 qua MQTT, lưu vào Database và đẩy cập nhật realtime lên Web UI qua API/WebSocket.
         </div>
 
         <div className="mt-6 grid gap-6 md:grid-cols-2">
@@ -75,6 +75,7 @@ export function DashboardPage() {
             <div className="text-sm font-semibold">Thông tin nhóm</div>
             <div className="mt-2 text-sm opacity-95">
               <div className="font-medium">{teamName}</div>
+              <div className="mt-2 text-sm font-semibold">Danh sách thành viên</div>
               <ul className="mt-2 list-disc pl-5">
                 {members.map((m) => (
                   <li key={m}>{m}</li>
@@ -83,10 +84,10 @@ export function DashboardPage() {
             </div>
           </div>
           <div className="rounded-2xl bg-white/10 p-5 backdrop-blur">
-            <div className="text-sm font-semibold">Bài thực hành</div>
+            <div className="text-sm font-semibold">Tên bài thực hành</div>
             <div className="mt-2 text-sm opacity-95">
-              <div>Bài thực hành số 4</div>
-              <div className="mt-1">Web UI giám sát và điều khiển thiết bị IoT</div>
+              <div>Web UI IoT (Web UI - API - Database)</div>
+              <div className="mt-1">Giám sát cảm biến, biểu đồ realtime, điều khiển thiết bị qua MQTT và quản lý logs</div>
             </div>
           </div>
         </div>
